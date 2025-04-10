@@ -4,14 +4,15 @@ from datetime import datetime
 from time import perf_counter
 # import playwright
 from playwright.async_api import async_playwright
+import itertools
 
 
 
 # SEARCH_TERMS = ["software engineer", "data analyst","data engineer"]
 # LOCATIONS = ["sydney", "perth"]
 
-SEARCH_TERMS = ["data analyst"]
-LOCATIONS = "brisbane"
+SEARCH_TERMS = ["data analyst","software engineer","developer"]
+LOCATIONS = ["brisbane","sydney","perth"]
 
 BASE_URL = "https://www.seek.com.au"
 """ 
@@ -38,9 +39,14 @@ async def scrape_seek_jobs():
 
 
 
-        for idx, term in enumerate((SEARCH_TERMS), start=1):
-            print(f"{idx}: Scraping for: {term} in {LOCATIONS}")
+        for term, location in itertools.product(SEARCH_TERMS,LOCATIONS):
+            print(f": Scraping for: {term} in {location}")
+            
             #Debug_sampling
+      # for _, term in enumerate((SEARCH_TERMS), start=1):    ###/// refactor 
+        #     for _,location in enumerate (LOCATIONS):
+        #         print(f" Scraping for: {term} in {location}")
+
             # print(f"Index {idx}: term = {term}, location = {LOCATIONS}")
             # for page_num in range(1, 6):
             #      #ElementHandle to string
@@ -49,7 +55,7 @@ async def scrape_seek_jobs():
             page_num=1
             while True:
 
-                url = f"{BASE_URL}/{term.replace(' ', '-')}-jobs/in-all-{LOCATIONS}?page={page_num}" #hotfix
+                url = f"{BASE_URL}/{term.replace(' ', '-')}-jobs/in-all-{location}?page={page_num}" #hotfix
                 await page.goto(url)
                 
                 # #Debug
@@ -197,6 +203,5 @@ if __name__ == "__main__":
 ##++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ##+++++++++++++++++++++++++++++   CODE CEMETERY  ++++++++++++++++++++++++++++++++++++++
 ##+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++##
-
 
 
